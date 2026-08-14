@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "knowledgeBaseRoot": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB",
+  "manifestPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/manifest.json",
+  "manifestSha256": "99a33854ee2e9205e0adad98e3f638e3416824b7327fd5bf2033d3862ef9b3f8",
+  "scope": [
+    "01-卡套接头",
+    "02-面密封与VCR",
+    "03-焊接接头",
+    "04-VIGOUR"
+  ],
+  "summary": {
+    "relevantDocuments": 17,
+    "sourceDocuments": 13,
+    "targetDocuments": 4,
+    "sourceBrands": [
+      "FITOK",
+      "FUJIKIN",
+      "JSK",
+      "SUPERLOK",
+      "Swagelok",
+      "TK-Fujikin",
+      "UNILOK"
+    ],
+    "routeCoveragePercent": 100.0,
+    "pageRouteCoveragePercent": 100.0,
+    "riskDocumentCount": 13
+  },
+  "documents": [
+    {
+      "sourceId": "catalog:b27f7e22b4283209",
+      "source": "6D_Series_Tube_Fittings_ZH.pdf",
+      "businessBrand": "FITOK",
+      "catalogFamily": "tube_fitting",
+      "role": "source",
+      "manifestBrand": "6D Series",
+      "productType": "卡套接头",
+      "category": "01-卡套接头",
+      "language": "zh",
+      "pages": 90,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "b27f7e22b4283209206c444e8e7445bfaa54f43b47344c741423398cea28602c",
+      "documentSha256": "b8ef523e44b4208ca5fc8ec4f97ef97242f613d5173caa689c3d7306f3ca02fe",
+      "pageTextSha256": "63f7506e8195d3f1837abb494305387283dd4670b08e0f52709d5615a9d1767c",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/01-卡套接头/6D_Series_Tube_Fittings_ZH.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/6D_Series_Tube_Fittings_ZH.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/6D_Series_Tube_Fittings_ZH.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "6-31 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "426",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:e70fd629b62ccd13",
+      "source": "Face_Seal_Fittings_ZH.pdf",
+      "businessBrand": "FITOK",
+      "catalogFamily": "face_seal",
+      "role": "source",
+      "manifestBrand": "未知",
+      "productType": "面密封接头",
+      "category": "02-面密封与VCR",
+      "language": "zh",
+      "pages": 33,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "e70fd629b62ccd13cf934229c139a6d7ce657740e62d663a5ffc49b6944ea352",
+      "documentSha256": "85f9c8e28f3d3d70e09d8f1b980c22f3b0756c7eb8162f7457824064a2e87730",
+      "pageTextSha256": "cd05374ad1e5ab4a3ee2a264b04880909a1534358951ad49780bc0f905f720fe",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/02-面密封与VCR/Face_Seal_Fittings_ZH.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/Face_Seal_Fittings_ZH.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/Face_Seal_Fittings_ZH.pdf",
+      "risks": [
+        {
+          "code": "nul_bytes",
+          "severity": "high",
+          "action": "逐页回查原 PDF"
+        },
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "14-32 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "90",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:f8f18015f4f53148",
+      "source": "Weld_Fittings_ZH.pdf",
+      "businessBrand": "FITOK",
+      "catalogFamily": "weld_fitting",
+      "role": "source",
+      "manifestBrand": "未知",
+      "productType": "焊接接头",
+      "category": "03-焊接接头",
+      "language": "zh",
+      "pages": 14,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "f8f18015f4f53148610dfad3feab48c0cfac4b6e1cd6d4c44f29c2d2220ec7fc",
+      "documentSha256": "b8111f56ea7f97dc2b52d1f26c7ad933c716cba79178bc390aad7d09ae1a184c",
+      "pageTextSha256": "fb79b1169043084a268fcb7d0f341f5257adff9a157b1df704c0f3203abdecd4",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/03-焊接接头/Weld_Fittings_ZH.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/Weld_Fittings_ZH.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/Weld_Fittings_ZH.pdf",
+      "risks": []
+    },
+    {
+      "sourceId": "catalog:1f5d1e0801b6122e",
+      "source": "Fujikin-UJR接头系列.pdf",
+      "businessBrand": "FUJIKIN",
+      "catalogFamily": "face_seal",
+      "role": "source",
+      "manifestBrand": "Fujikin",
+      "productType": "UJR 面密封接头",
+      "category": "02-面密封与VCR",
+      "language": "zh-ja-en",
+      "pages": 14,
+      "conversionEngine": "microsoft-markitdown-0.1.7+macos-vision-ocr",
+      "quality": "OCR-需复核",
+      "attachmentSha256": "1f5d1e0801b6122e69edb1ec5bcd1913ec4394b00f1302105d255c433e179239",
+      "documentSha256": "567b24e55c9ba4c60581b9c9e22b45b0283f12a60d10fd0f86dd5ff67a4acc2a",
+      "pageTextSha256": "80707ee628985acced083d3b4e6c383b255036788b2bc9bb9b18279ce8223990",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/02-面密封与VCR/Fujikin-UJR接头系列.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/Fujikin-UJR接头系列.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/Fujikin-UJR接头系列.pdf",
+      "risks": []
+    },
+    {
+      "sourceId": "catalog:ab8cd928e543e7a8",
+      "source": "JSK-Micro fitting.pdf",
+      "businessBrand": "JSK",
+      "catalogFamily": "weld_fitting",
+      "role": "source",
+      "manifestBrand": "JSK",
+      "productType": "微型焊接接头",
+      "category": "03-焊接接头",
+      "language": "ja-en",
+      "pages": 8,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "ab8cd928e543e7a8ca580d1285fbc8c3571d4b7db809ec3c21e8c97140d0402a",
+      "documentSha256": "677ffd8970121de089f7aa15117ed6ab3f8f97bf36fb5f8f158e098e3402b33d",
+      "pageTextSha256": "3b6507b4b60bcb5a17fd0305cf499d07a3ac244c5cc24bffc9e209c519141dc6",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/03-焊接接头/JSK-Micro fitting.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/JSK-Micro fitting.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/JSK-Micro fitting.pdf",
+      "risks": []
+    },
+    {
+      "sourceId": "catalog:126324dcaf6399eb",
+      "source": "JSK-VCR.pdf",
+      "businessBrand": "JSK",
+      "catalogFamily": "face_seal",
+      "role": "source",
+      "manifestBrand": "JSK",
+      "productType": "VCR 面密封接头",
+      "category": "02-面密封与VCR",
+      "language": "en",
+      "pages": 10,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "126324dcaf6399ebdada25e4fed371739c295be366c250ac841d6162abd4d3e3",
+      "documentSha256": "99f34ae3c1767ca55e686472ad5c84eb4f59b0861101fe2ad16f5cc65cf2eb51",
+      "pageTextSha256": "5d6691ff79903c4ed56fc65bb9d337b83baa656b13826437067d276a5aa1f6a9",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/02-面密封与VCR/JSK-VCR.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/JSK-VCR.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/JSK-VCR.pdf",
+      "risks": []
+    },
+    {
+      "sourceId": "catalog:a7b90fa2c6a52a9b",
+      "source": "SUPERLOK-TUBE-FITTINGS.pdf",
+      "businessBrand": "SUPERLOK",
+      "catalogFamily": "tube_fitting",
+      "role": "source",
+      "manifestBrand": "SUPERLOK",
+      "productType": "卡套接头",
+      "category": "01-卡套接头",
+      "language": "en",
+      "pages": 66,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "a7b90fa2c6a52a9b9110c4433dc6745b1060144231e25e92b0c84ac3e1c14484",
+      "documentSha256": "c6d814b5427bae2682195ebdded02b89af4c411dd45e82ce0730eda0d2824e74",
+      "pageTextSha256": "b4a1f49f9d319076a8041df05bebac202ce842cf9f3798606c1970d52705e158",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/01-卡套接头/SUPERLOK-TUBE-FITTINGS.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/SUPERLOK-TUBE-FITTINGS.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/SUPERLOK-TUBE-FITTINGS.pdf",
+      "risks": [
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "32",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:2648cc4772da9895",
+      "source": "UHP-WELD-CLEAN-FITTINGS (2).pdf",
+      "businessBrand": "SUPERLOK",
+      "catalogFamily": "weld_fitting",
+      "role": "source",
+      "manifestBrand": "未知",
+      "productType": "UHP 洁净焊接接头",
+      "category": "03-焊接接头",
+      "language": "en",
+      "pages": 22,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "2648cc4772da9895fa31258edd9aab9d73bd6b2e9ef87b1d6338452e491f962a",
+      "documentSha256": "0f1b77f34cb6015571a4e4de7c1696e8132ab2f271707b01bce836efb28ceef8",
+      "pageTextSha256": "ec4e61c1a2738ebe2e8e64279974e37f235c28c793eee406d12952412878a675",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/03-焊接接头/UHP-WELD-CLEAN-FITTINGS (2).md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/UHP-WELD-CLEAN-FITTINGS (2).md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/UHP-WELD-CLEAN-FITTINGS (2).pdf",
+      "risks": [
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "18",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:64697c2dbf10f815",
+      "source": "Swagelok-VCR-EN.pdf",
+      "businessBrand": "Swagelok",
+      "catalogFamily": "face_seal",
+      "role": "source",
+      "manifestBrand": "Swagelok",
+      "productType": "VCR 面密封接头",
+      "category": "02-面密封与VCR",
+      "language": "en",
+      "pages": 21,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "64697c2dbf10f815652f10aa43323eee3f52ea50e2dd4313fcc88b184b7b5073",
+      "documentSha256": "1d239cda408e4fe28b48b9f4df68219b663641c6b4a81ef90027e5be55abdad6",
+      "pageTextSha256": "28c5f060137d32cb67802e9a10047ac952ac42579ec3eefda19177409ff86271",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/02-面密封与VCR/Swagelok-VCR-EN.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/Swagelok-VCR-EN.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/Swagelok-VCR-EN.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "5-16 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "35",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:5c33057093a0070a",
+      "source": "swagelok-卡套.pdf",
+      "businessBrand": "Swagelok",
+      "catalogFamily": "tube_fitting",
+      "role": "source",
+      "manifestBrand": "Swagelok",
+      "productType": "卡套接头",
+      "category": "01-卡套接头",
+      "language": "zh",
+      "pages": 77,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "5c33057093a0070a40c2498a2d959237564ec65ef567cc5a330eef63d65b9c81",
+      "documentSha256": "fc15577a69c090e1c059b7cae30f6786da95ed63d33d259b11bfc3686174e960",
+      "pageTextSha256": "e99dd72a8a00caa9370aa0390f58ed0e035b85801c1e64b56b8e3dc0d5e34798",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/01-卡套接头/swagelok-卡套.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/swagelok-卡套.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/swagelok-卡套.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "3-19 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "76",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:ff15a6b7045a32f4",
+      "source": "WELD & METAL SEAL FITTINGS (2).pdf",
+      "businessBrand": "TK-Fujikin",
+      "catalogFamily": "weld_and_metal_seal",
+      "role": "source",
+      "manifestBrand": "未知",
+      "productType": "焊接与金属密封接头",
+      "category": "03-焊接接头",
+      "language": "en",
+      "pages": 22,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "ff15a6b7045a32f41a1a03880aa383e55db441bce8aec2df9dc12ab6602eacf8",
+      "documentSha256": "3b928316cc902d78496b72e18684b50c6bf40c709a2f15bce58f93caf7ddd145",
+      "pageTextSha256": "3dd873f13fc2af4a0c52fef8f13ffd1b56518c9b5d5c11e31ad1bdca05c81f02",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/03-焊接接头/WELD & METAL SEAL FITTINGS (2).md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/WELD & METAL SEAL FITTINGS (2).md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/WELD & METAL SEAL FITTINGS (2).pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "3-13 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "31",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:f1540814f26c4126",
+      "source": "UNILOK-VCR.pdf",
+      "businessBrand": "UNILOK",
+      "catalogFamily": "face_seal",
+      "role": "source",
+      "manifestBrand": "UNILOK",
+      "productType": "VCR 面密封接头",
+      "category": "02-面密封与VCR",
+      "language": "en",
+      "pages": 10,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "f1540814f26c41260dcf820fdc6f7dbcc276bfcfcedd2c8c9049e1e50a17adbb",
+      "documentSha256": "665d8f12610623d06fa4c726dea5db48a46e006e048b30d1b2606f9809613f85",
+      "pageTextSha256": "4b4a13b89f3a47e2d441a40101286f183079c10203f1e075410a4d6128a63c14",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/02-面密封与VCR/UNILOK-VCR.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/UNILOK-VCR.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/UNILOK-VCR.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "12-27 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "44",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:fe8bc683e0d31d49",
+      "source": "UNILOK-卡套.pdf",
+      "businessBrand": "UNILOK",
+      "catalogFamily": "tube_fitting",
+      "role": "source",
+      "manifestBrand": "UNILOK",
+      "productType": "卡套接头",
+      "category": "01-卡套接头",
+      "language": "zh-en",
+      "pages": 31,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "fe8bc683e0d31d49fb19a80817958886beb375fcc1029a879f0cf7e4427d9a74",
+      "documentSha256": "b445a89c6982c46770486b074c3d2fffb59f1d2f869a80ada105302c8e5af3d5",
+      "pageTextSha256": "c3848f69a8a9447049411d0e8f21bae5c154bb682809b789a9e5f8bda1a7961b",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/01-卡套接头/UNILOK-卡套.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/UNILOK-卡套.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/UNILOK-卡套.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "7-30 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "63",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:f8599bcc39755472",
+      "source": "VIGOUR VHPS接头目录 英文-26.8.7.pdf",
+      "businessBrand": "VIGOUR",
+      "catalogFamily": "VHPS",
+      "role": "target",
+      "manifestBrand": "VIGOUR",
+      "productType": "VHPS 接头",
+      "category": "04-VIGOUR",
+      "language": "en",
+      "pages": 84,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "f8599bcc39755472696164cfa96e91b8d6f5cefa912d5f856c712b615675b95b",
+      "documentSha256": "afd973043145061311c2a351d0760d2313112e59ed2c9731d7643d6559b2f8d1",
+      "pageTextSha256": "dc80fbbc837745b6ad3a0a5db43f374d8f669eb6f6309efada8dc78f05388136",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/04-VIGOUR/VIGOUR VHPS接头目录 英文-26.8.7.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/VIGOUR VHPS接头目录 英文-26.8.7.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/VIGOUR VHPS接头目录 英文-26.8.7.pdf",
+      "risks": [
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "117",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:69b146a1fdee9a19",
+      "source": "VIGOUR VHPS英文目录-26.8.7.pdf",
+      "businessBrand": "VIGOUR",
+      "catalogFamily": "VHPS",
+      "role": "target",
+      "manifestBrand": "VIGOUR",
+      "productType": "VHPS 系统目录",
+      "category": "04-VIGOUR",
+      "language": "en",
+      "pages": 206,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "69b146a1fdee9a19ea1ec7d6349bde1acea6941859535a1c53b7bffbd338320d",
+      "documentSha256": "baf57046a06f972490494d6f7155ecfc060cc32f6c7b7f15114c92711038a7f0",
+      "pageTextSha256": "7539b1b15e1508bcc3913e029f525ba3cee53cc8aa8cce4b7d4ef80a0bd7fd1d",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/04-VIGOUR/VIGOUR VHPS英文目录-26.8.7.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/VIGOUR VHPS英文目录-26.8.7.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/VIGOUR VHPS英文目录-26.8.7.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "3-16 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "30",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:65d989ca9bbb63db",
+      "source": "VIGOUR VUPS接头目录 英文-26.8.6.pdf",
+      "businessBrand": "VIGOUR",
+      "catalogFamily": "VUPS",
+      "role": "target",
+      "manifestBrand": "VIGOUR",
+      "productType": "VUPS 接头",
+      "category": "04-VIGOUR",
+      "language": "en",
+      "pages": 37,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "65d989ca9bbb63dbff8368e86574d1105fa6a71fb6c1f7a39ce46e97106da564",
+      "documentSha256": "4fff1e51f4f6799d8f0ada324cce7a8600fcc6802fd58211acd557030a6acb2a",
+      "pageTextSha256": "212bf7fe927ee892c2e0e18baa01e83f471dc2f8b55daaeee177cab350ee1b12",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/04-VIGOUR/VIGOUR VUPS接头目录 英文-26.8.6.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/VIGOUR VUPS接头目录 英文-26.8.6.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/VIGOUR VUPS接头目录 英文-26.8.6.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "4-13 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "14",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    },
+    {
+      "sourceId": "catalog:a579af2dc01ebd4a",
+      "source": "VIGOUR VUPS英文目录-26.8.7.pdf",
+      "businessBrand": "VIGOUR",
+      "catalogFamily": "VUPS",
+      "role": "target",
+      "manifestBrand": "VIGOUR",
+      "productType": "VUPS 系统目录",
+      "category": "04-VIGOUR",
+      "language": "en",
+      "pages": 173,
+      "conversionEngine": "microsoft-markitdown-0.1.7",
+      "quality": "可检索",
+      "attachmentSha256": "a579af2dc01ebd4aa6c47fe0dc8198f0472dfa5eb0887b8db2a74707109bdcd9",
+      "documentSha256": "e2232fa4345143e5419282b942a7ced3f19cb4a5e6ef482bb402b10ffcec9565",
+      "pageTextSha256": "a47521802cdff74e7e69897dd77f385f42a3c4dc429053c366ce1a0741710879",
+      "mdPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/docs/04-VIGOUR/VIGOUR VUPS英文目录-26.8.7.md",
+      "pageTextPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/audit/page-text/VIGOUR VUPS英文目录-26.8.7.md",
+      "pdfPath": "/Users/maybe/Documents/ChatGPT/mark/MarkItDown-KB/attachments/VIGOUR VUPS英文目录-26.8.7.pdf",
+      "risks": [
+        {
+          "code": "table_column_drift",
+          "severity": "medium",
+          "detail": "3-13 columns",
+          "action": "不稳定表格转入逐页 PDF 复核"
+        },
+        {
+          "code": "spaced_or_reverse_text",
+          "severity": "medium",
+          "detail": "143",
+          "action": "结合 PDF 图片确认文字方向与列归属"
+        }
+      ]
+    }
+  ]
+}

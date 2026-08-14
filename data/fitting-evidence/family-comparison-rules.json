@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "statusVocabulary": [
+    "within_tolerance",
+    "out_of_tolerance",
+    "not_comparable",
+    "source_missing",
+    "target_missing",
+    "needs_manual_review"
+  ],
+  "sourceTargetRoutes": [
+    { "sourceFamily": "tube_fitting", "targetFamily": "VHPS", "decision": "family_rule_required" },
+    { "sourceFamily": "face_seal", "targetFamily": "VUPS", "decision": "family_rule_required" },
+    { "sourceFamily": "weld_fitting", "targetFamily": "VUPS", "decision": "family_rule_required" },
+    { "sourceFamily": "weld_and_metal_seal", "targetFamily": "VUPS", "decision": "family_rule_required" }
+  ],
+  "rules": [
+    {
+      "ruleId": "face_seal_gland.v1",
+      "families": ["face_seal_short_gland", "face_seal_long_gland", "face_seal_weld_gland"],
+      "decisionStatus": "approved_from_handoff",
+      "requiredDimensions": ["overallLength", "insertionLength", "wallThickness"],
+      "hardStructuralFields": ["gender", "lengthClass", "weldType", "faceSealSize", "tubeOutsideDiameter"],
+      "tolerances": {
+        "overallLength": { "value": 1.0, "unit": "mm", "comparison": "closed", "integerScale": 1000 },
+        "insertionLength": { "value": 1.0, "unit": "mm", "comparison": "closed", "integerScale": 1000 },
+        "wallThickness": { "value": 0.005, "unit": "in", "comparison": "closed", "integerScale": 1000000 }
+      },
+      "decisionSource": "全品牌型号尺寸证据全量复核与结果差异展示-项目交接计划.md#6.1"
+    },
+    {
+      "ruleId": "catalog_dimension_alignment.v1",
+      "families": [
+        "tube_fitting",
+        "face_seal",
+        "weld_fitting",
+        "weld_and_metal_seal"
+      ],
+      "decisionStatus": "numeric_difference_available_tolerance_unconfirmed",
+      "requiredDimensions": [],
+      "hardStructuralFields": [],
+      "defaultStatus": "needs_manual_review",
+      "greenAllowed": false,
+      "displayNumericDifferences": true,
+      "decisionSource": "全品牌型号尺寸证据全量复核与结果差异展示-项目交接计划.md#6.1"
+    },
+    {
+      "ruleId": "non_gland_family.unconfirmed.v1",
+      "families": [
+        "straight_or_reducing_weld",
+        "elbow_tee_cross",
+        "tube_fitting_or_adapter",
+        "bulkhead",
+        "gasket",
+        "nut_or_retainer",
+        "cap_or_plug",
+        "restriction_filter_special",
+        "unclassified"
+      ],
+      "decisionStatus": "user_confirmation_required",
+      "requiredDimensions": [],
+      "hardStructuralFields": [],
+      "defaultStatus": "needs_manual_review",
+      "greenAllowed": false,
+      "decisionSource": "全品牌型号尺寸证据全量复核与结果差异展示-项目交接计划.md#8"
+    }
+  ]
+}
