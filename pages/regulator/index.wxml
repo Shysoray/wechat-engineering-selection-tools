@@ -1,0 +1,122 @@
+<view class="ui-page regulator-page">
+  <app-header title="减压阀选型" subtitle="Pressure Regulator Selection" />
+
+  <view class="ui-card intro-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">GUIDED SELECTION</text>
+        <text class="section-title">按工况自动生成型号</text>
+        <text class="section-subtitle">{{stepNotice}}</text>
+      </view>
+      <button class="example-button" bindtap="loadExample">填入示例</button>
+    </view>
+    <view class="selection-progress" aria-label="选型进度：{{selectionProgress.label}}">
+      <view class="selection-progress__head">
+        <text>选型进度</text>
+        <text>{{selectionProgress.label}}</text>
+      </view>
+      <view class="selection-progress__track">
+        <view class="selection-progress__bar" style="width: {{selectionProgress.percent}}%"></view>
+      </view>
+    </view>
+    <view class="intro-footer">
+      <text wx:if="{{isExample}}" class="example-notice">当前为示例工况 / Example condition</text>
+      <text wx:else class="auto-notice">条件完整后自动匹配，无需额外提交。</text>
+      <button class="reset-button" bindtap="reset">重置</button>
+    </view>
+  </view>
+
+  <view wx:if="{{actionNotices.length}}" class="action-notices">
+    <text wx:for="{{actionNotices}}" wx:key="*this" class="action-notice">{{item}}</text>
+  </view>
+
+  <view class="result-anchor"></view>
+  <view wx:if="{{result}}" class="ui-card result-card">
+    <view class="result-head">
+      <view>
+        <text class="result-eyebrow">VIGOUR RECOMMENDATION</text>
+        <text class="result-title">减压阀候选型号</text>
+      </view>
+      <text class="ui-status {{result.status === '需复核' ? 'ui-status-warning' : 'ui-status-success'}}">{{result.status}}</text>
+    </view>
+
+    <button wx:if="{{result.status !== '需复核'}}" class="model-card model-card--button" data-model="{{result.vigourModel}}" bindtap="copyVigourModel" hover-class="model-card--pressed">
+      <view>
+        <text class="model-label">MODEL CODE</text>
+        <text class="ui-result-code result-code" user-select="true">{{result.vigourModel}}</text>
+      </view>
+      <text class="copy-action">复制</text>
+    </button>
+    <view wx:else class="model-card model-card--warning">
+      <view>
+        <text class="model-label">MODEL CODE · REVIEW</text>
+        <text class="ui-result-code result-code" user-select="true">{{result.vigourModel}}</text>
+      </view>
+      <text class="copy-action copy-action--warning">建议核实</text>
+    </view>
+
+    <view class="spec-grid">
+      <view wx:for="{{result.coreSpecs}}" wx:for-item="spec" wx:key="label" class="spec-item">
+        <text class="spec-label">{{spec.label}}</text><text class="spec-value">{{spec.value}}</text>
+      </view>
+    </view>
+
+    <button wx:if="{{result.moreSpecs.length}}" class="details-toggle" bindtap="toggleResultDetails">{{resultDetailsOpen ? '收起完整规格 ↑' : '查看完整规格 ↓'}}</button>
+    <view wx:if="{{resultDetailsOpen}}" class="spec-grid spec-grid--more">
+      <view wx:for="{{result.moreSpecs}}" wx:for-item="spec" wx:key="label" class="spec-item">
+        <text class="spec-label">{{spec.label}}</text><text class="spec-value">{{spec.value}}</text>
+      </view>
+    </view>
+    <text wx:if="{{result.note}}" class="result-note">{{result.note}}</text>
+  </view>
+
+  <view wx:if="{{errors.length}}" class="error-card">
+    <text class="error-title">当前组合未找到可靠型号</text>
+    <text wx:for="{{errors}}" wx:key="*this" class="error-item">{{item}}</text>
+  </view>
+
+  <view wx:for="{{fieldGroups}}" wx:for-item="group" wx:key="key" class="ui-card group-card">
+    <view class="group-head">
+      <view><text class="group-title">{{group.title}}</text><text class="group-en">{{group.english}}</text></view>
+      <text class="group-number">0{{index + 1}}</text>
+    </view>
+
+    <view class="group-fields">
+      <view wx:for="{{group.fields}}" wx:for-item="field" wx:key="key" class="field-block {{field.segmented ? 'field-block--segmented' : ''}}">
+        <text class="ui-label-cn">{{field.label}}</text>
+        <text class="ui-label-en">Selection parameter</text>
+
+        <view wx:if="{{field.input}}" class="input-with-unit">
+          <input class="field-input" type="digit" value="{{field.valueText}}" data-field="{{field.key}}" bindinput="onFieldInput" bindblur="onFieldBlur" placeholder="{{field.key === 'flow' ? '请输入流量' : field.placeholder}}" />
+          <text class="field-unit">slpm</text>
+        </view>
+
+        <view wx:elif="{{field.segmented}}" class="choice-grid choice-grid--{{field.displayOptions.length}}">
+          <button
+            wx:for="{{field.displayOptions}}"
+            wx:for-item="option"
+            wx:key="value"
+            class="choice-button {{option.selected ? 'active' : ''}}"
+            data-field="{{field.key}}"
+            data-value="{{option.value}}"
+            bindtap="chooseSegmentOption"
+          >{{option.label}}</button>
+        </view>
+
+        <button wx:else class="picker-field {{field.isPlaceholder ? 'placeholder' : ''}} {{field.isDisabled ? 'disabled' : ''}}" data-field="{{field.key}}" bindtap="chooseField" disabled="{{field.isDisabled}}">
+          <text>{{field.valueText}}</text><text wx:if="{{!field.isDisabled}}">⌄</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="ui-card engineering-card">
+    <button class="engineering-toggle" aria-label="{{engineeringNotesOpen ? '收起工程说明' : '展开工程说明'}}" bindtap="toggleEngineeringNotes">
+      <view><text class="engineering-title">目录依据与工程说明</text><text class="engineering-en">Catalog Basis & Engineering Notes</text></view>
+      <text>{{engineeringNotesOpen ? '↑' : '↓'}}</text>
+    </button>
+    <text wx:if="{{engineeringNotesOpen}}" class="ui-engineering-note">系统先按单级膜片、双级膜片或高压活塞结构限定系列，再依据材料、压力、孔位、连接和流量匹配。VSR-710 与 VSR-930 目录以 Cv 标注；毒腐介质优先限定 tied-diaphragm 系列。正式下单前请结合目录与实际工况复核。</text>
+  </view>
+
+  <option-sheet visible="{{optionSheet.visible}}" title="{{optionSheet.title}}" options="{{optionSheet.options}}" searchable="{{true}}" bindselect="onOptionSelect" bindclose="closeOptionSheet" />
+</view>

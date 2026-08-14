@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "减压阀选型",
+  "usingComponents": {
+    "app-header": "/components/app-header/index",
+    "option-sheet": "/components/option-sheet/index"
+  }
+}
