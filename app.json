@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "subPackages": [
+    {
+      "root": "packageFitting",
+      "name": "fitting",
+      "pages": [
+        "pages/index"
+      ]
+    },
+    {
+      "root": "pages/aptech",
+      "name": "aptech",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "pages/regulator",
+      "name": "regulator",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "pages/cv",
+      "name": "cv",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "pages/compatibility",
+      "name": "compatibility",
+      "pages": [
+        "index"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTitleText": "选型工具中心",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom",
+    "backgroundColor": "#f3f2ef",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

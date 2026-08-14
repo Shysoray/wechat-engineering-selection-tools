@@ -1,0 +1,125 @@
+{
+  "description": "减压阀选型小程序",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".git"
+      },
+      {
+        "type": "folder",
+        "value": ".codex"
+      },
+      {
+        "type": "folder",
+        "value": ".agents"
+      },
+      {
+        "type": "folder",
+        "value": ".superpowers"
+      },
+      {
+        "type": "folder",
+        "value": ".worktrees"
+      },
+      {
+        "type": "folder",
+        "value": ".codex-spreadsheet-work"
+      },
+      {
+        "type": "folder",
+        "value": "tmp"
+      },
+      {
+        "type": "folder",
+        "value": "outputs"
+      },
+      {
+        "type": "folder",
+        "value": "tools"
+      },
+      {
+        "type": "folder",
+        "value": "data"
+      },
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "file",
+        "value": "README.md"
+      },
+      {
+        "type": "suffix",
+        "value": ".DS_Store"
+      },
+      {
+        "type": "file",
+        "value": "utils/fittingDatabase.js"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/valve.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/pressure-regulator.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/accessory.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/valve.jpg"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/fitting.jpg"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/pressure-regulator.jpg"
+      },
+      {
+        "type": "file",
+        "value": "assets/tools/accessory.jpg"
+      }
+    ],
+    "include": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": false,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.7.12",
+  "appid": "touristappid",
+  "projectname": "%E9%80%89%E5%9E%8B%E5%B0%8F%E7%A8%8B%E5%BA%8F",
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

@@ -1,0 +1,10 @@
+.DS_Store
+.codex-spreadsheet-work/
+.superpowers/
+.worktrees/
+docs/superpowers/
+outputs/
+tmp/
+project.private.config.json
+**/__pycache__/
+*.pyc
