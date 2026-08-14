@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vigour.local/schemas/fitting-evidence.schema.json",
+  "title": "Fitting mapping dimension evidence",
+  "type": "object",
+  "required": ["schemaVersion", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/mappingEvidence" }
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": [
+        "within_tolerance",
+        "out_of_tolerance",
+        "not_comparable",
+        "source_missing",
+        "target_missing",
+        "needs_manual_review"
+      ]
+    },
+    "comparison": {
+      "type": "object",
+      "required": ["dimension", "sourceValue", "targetValue", "unit", "absoluteDifference", "tolerance", "matched", "required"],
+      "properties": {
+        "dimension": { "type": "string", "minLength": 1 },
+        "sourceValue": { "type": "number" },
+        "targetValue": { "type": "number" },
+        "unit": { "type": "string", "minLength": 1 },
+        "absoluteDifference": { "type": "number", "minimum": 0 },
+        "relativeDifferencePercent": { "type": ["number", "null"] },
+        "tolerance": { "type": ["number", "null"], "minimum": 0 },
+        "matched": { "type": ["boolean", "null"] },
+        "required": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "mappingEvidence": {
+      "type": "object",
+      "required": ["evidenceId", "brand", "sourceModel", "vigourModel", "familyRule", "comparisons", "status", "reason"],
+      "properties": {
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "brand": { "type": "string", "minLength": 1 },
+        "sourceModel": { "type": "string", "minLength": 1 },
+        "vigourModel": { "type": "string" },
+        "familyRule": { "type": "string", "minLength": 1 },
+        "comparisons": { "type": "array", "items": { "$ref": "#/$defs/comparison" } },
+        "status": { "$ref": "#/$defs/status" },
+        "reason": { "type": "string", "minLength": 1 },
+        "sourceEvidenceId": { "type": "string" },
+        "targetEvidenceId": { "type": "string" },
+        "evidencePages": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  }
+}
