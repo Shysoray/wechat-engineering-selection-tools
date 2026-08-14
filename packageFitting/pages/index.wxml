@@ -1,0 +1,269 @@
+<view class="ui-page fitting-page">
+  <app-header title="管接头型号对标" subtitle="Fitting Cross Reference" />
+
+  <view class="mode-switch ui-card">
+    <button class="mode-option {{toolMode === 'check' ? 'active' : ''}}" data-mode="check" bindtap="chooseToolMode">
+      <text>型号校验</text><text class="mode-option__en">MODEL CHECK</text>
+    </button>
+    <button class="mode-option {{toolMode === 'select' ? 'active' : ''}}" data-mode="select" bindtap="chooseToolMode">
+      <text>条件选型</text><text class="mode-option__en">CONDITION SELECT</text>
+    </button>
+  </view>
+
+  <view wx:if="{{toolMode === 'check'}}" class="ui-card workspace-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">BATCH CROSS REFERENCE</text>
+        <text class="section-title">批量型号校验</text>
+        <text class="section-subtitle">每行一个型号，也支持逗号或分号分隔。输入后点击开始匹配。</text>
+      </view>
+      <button class="example-button" bindtap="loadBatchExample">填入示例</button>
+    </view>
+
+    <text wx:if="{{isExample}}" class="example-notice">当前为示例数据 / Example data</text>
+    <textarea
+      class="model-textarea"
+      value="{{batchInput}}"
+      placeholder="例如：SS-4-VCR-2-GR-VS"
+      maxlength="-1"
+      bindinput="onBatchInput"
+    />
+    <text wx:if="{{resultStale}}" class="stale-notice">输入已变化，旧结果不再有效，请重新匹配。</text>
+    <text wx:if="{{batchOverflowCount}}" class="stale-notice">当前超出 {{batchOverflowCount}} 个型号；单次最多处理 100 个，请拆分后重新匹配。</text>
+
+    <view class="submit-row">
+      <button class="ui-button-primary submit-button" hover-class="ui-button-primary-pressed" loading="{{isMatching}}" disabled="{{isMatching}}" bindtap="runBatchValidation">
+        {{isMatching ? '匹配中…' : '开始匹配'}}
+      </button>
+      <button class="ui-button-secondary reset-button" bindtap="reset">重置</button>
+    </view>
+  </view>
+
+  <view wx:if="{{toolMode === 'check' && batchSummary.total}}" class="batch-result-anchor">
+    <view class="summary-card ui-card">
+      <view class="summary-head">
+        <view>
+          <text class="section-title">匹配结果</text>
+          <text class="section-subtitle">Match Results · 共 {{batchSummary.total}} 行</text>
+        </view>
+        <text class="summary-count">{{batchSummary.total}}</text>
+      </view>
+      <view class="summary-filters">
+        <button class="summary-filter {{batchFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="setBatchFilter">全部 {{batchSummary.total}}</button>
+        <button class="summary-filter summary-filter--success {{batchFilter === 'exact' ? 'active' : ''}}" data-filter="exact" bindtap="setBatchFilter">精确 {{batchSummary.exact}}</button>
+        <button class="summary-filter summary-filter--warning {{batchFilter === 'candidate' ? 'active' : ''}}" data-filter="candidate" bindtap="setBatchFilter">待确认 {{batchSummary.candidate}}</button>
+        <button class="summary-filter summary-filter--neutral {{batchFilter === 'missing' ? 'active' : ''}}" data-filter="missing" bindtap="setBatchFilter">未识别 {{batchSummary.missing}}</button>
+      </view>
+      <view class="copy-actions">
+        <button class="copy-button copy-button--primary" bindtap="copyBatchSales">复制销售结果</button>
+        <button class="copy-button" bindtap="copyBatchMapping">复制完整对照</button>
+      </view>
+      <text class="copy-rule">复制始终包含全部 {{batchSummary.total}} 行，筛选不会改变行数或顺序。</text>
+    </view>
+
+    <view class="validation-results">
+      <view wx:for="{{visibleBatchResults}}" wx:key="resultKey" class="validation-item ui-card validation-item--{{item.presentationKind || item.kind}}">
+        <view class="validation-item__head">
+          <view class="source-block">
+            <text class="source-label">输入 / INPUT</text>
+            <scroll-view scroll-x="true" class="source-code" enhanced="true" show-scrollbar="false">{{item.input}}</scroll-view>
+          </view>
+          <text class="ui-status ui-status-{{item.statusTone}}">{{item.kindText}}</text>
+        </view>
+
+        <view wx:if="{{item.candidates.length}}" class="candidate-list">
+          <view wx:for="{{item.candidates}}" wx:for-item="candidate" wx:key="candidateKey" class="candidate-row">
+            <view wx:if="{{candidate.sourceModelText !== item.input || (candidate.similarity && (item.presentationKind === 'candidate' || item.kind === 'candidate'))}}" class="candidate-source">
+              <view class="candidate-source__main">
+                <view wx:if="{{candidate.sourceModelText !== item.input}}" class="candidate-detail">
+                  <text class="candidate-detail__label">候选：</text>
+                  <scroll-view scroll-x="true" class="candidate-code" enhanced="true" show-scrollbar="false">{{candidate.sourceModelText}}</scroll-view>
+                </view>
+              </view>
+              <text wx:if="{{candidate.similarity && (item.presentationKind === 'candidate' || item.kind === 'candidate')}}" class="similarity">{{candidate.similarity}}</text>
+            </view>
+
+            <button
+              wx:if="{{candidate.salesNeedsConfirmation && candidate.reviewCopyAllowed && candidate.displayVigourModel}}"
+              class="mapping-card mapping-card--button mapping-stack mapping-card--warning"
+              data-model="{{candidate.displayVigourModel}}"
+              data-review="true"
+              bindtap="copyVigourModel"
+              hover-class="mapping-card--pressed"
+            >
+              <view class="mapping-relation">
+                <text>{{candidate.brand}}</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-card__content mapping-model-row">
+                <scroll-view scroll-x="true" class="ui-result-code mapping-target" enhanced="true" show-scrollbar="false">{{candidate.displayVigourModel}}</scroll-view>
+                <text class="mapping-action mapping-action--warning">复制并核实</text>
+              </view>
+            </button>
+            <button
+              wx:elif="{{candidate.hasVigourModel && candidate.copyAllowed}}"
+              class="mapping-card mapping-card--button mapping-stack"
+              data-model="{{candidate.vigourModel}}"
+              data-review="false"
+              bindtap="copyVigourModel"
+              hover-class="mapping-card--pressed"
+            >
+              <view class="mapping-relation">
+                <text>{{candidate.brand}}</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-card__content mapping-model-row">
+                <scroll-view scroll-x="true" class="ui-result-code mapping-target" enhanced="true" show-scrollbar="false">{{candidate.vigourModel}}</scroll-view>
+                <text class="mapping-action">复制</text>
+              </view>
+            </button>
+            <view wx:elif="{{candidate.displayVigourModel}}" class="mapping-card mapping-stack mapping-card--warning">
+              <view class="mapping-relation">
+                <text>{{candidate.brand}}</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-card__content mapping-model-row">
+                <scroll-view scroll-x="true" class="ui-result-code mapping-target" enhanced="true" show-scrollbar="false">{{candidate.displayVigourModel}}</scroll-view>
+                <text class="mapping-action mapping-action--locked">仅供核对</text>
+              </view>
+            </view>
+            <view wx:else class="mapping-card mapping-stack mapping-card--empty">
+              <view class="mapping-relation">
+                <text>{{candidate.brand}}</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-model-row"><text class="empty-model">暂无可直接使用的精确型号</text></view>
+            </view>
+
+            <view wx:if="{{candidate.hasDimensionComparison}}" class="dimension-comparison dimension-comparison--{{candidate.dimensionComparisonTone}}">
+              <view class="dimension-comparison__head">
+                <text class="dimension-comparison__title">尺寸差异 / DIMENSION DELTA</text>
+                <text class="dimension-comparison__summary">{{candidate.dimensionComparisonSummary}}</text>
+              </view>
+              <text wx:if="{{candidate.dimensionComparisonMissingText}}" class="dimension-comparison__missing">{{candidate.dimensionComparisonMissingText}}</text>
+              <view wx:for="{{candidate.dimensionComparisons}}" wx:for-item="dimension" wx:key="key" class="dimension-row dimension-row--{{dimension.tone}}">
+                <view class="dimension-row__main">
+                  <text class="dimension-row__label">{{dimension.label}}</text>
+                  <text class="dimension-row__values">原 {{dimension.sourceText}} → VIGOUR {{dimension.targetText}} {{dimension.unit}}</text>
+                </view>
+                <text class="dimension-row__delta">差 {{dimension.differenceText}} {{dimension.unit}} · {{dimension.statusText}}<text wx:if="{{dimension.toleranceConfirmed}}">（≤ {{dimension.toleranceText}} {{dimension.unit}}）</text><text wx:else>（公差待确认）</text></text>
+              </view>
+              <text wx:if="{{candidate.dimensionEvidencePageSummary}}" class="dimension-comparison__evidence">证据：{{candidate.dimensionEvidencePageSummary}}</text>
+            </view>
+
+            <view wx:if="{{candidate.matchWarnings.length}}" class="warning-list">
+              <text wx:for="{{candidate.matchWarnings}}" wx:for-item="warning" wx:key="text" class="warning-text warning-text--{{warning.level}}">{{warning.text}}</text>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="missing-state">
+          <text class="missing-state__title">{{item.missingTitle || '数据库中未找到可靠候选'}}</text>
+          <text class="missing-state__copy">{{item.missingCopy || '未识别型号｜请检查品牌和订购号'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{toolMode === 'select'}}" class="ui-card workspace-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">CONDITION SELECT</text>
+        <text class="section-title">按条件选型</text>
+        <text class="section-subtitle">{{stepNotice}}</text>
+      </view>
+      <text class="result-count">{{results.length}} 项</text>
+    </view>
+
+    <view class="filter-grid">
+      <button class="picker-field {{activeFields.length ? '' : 'picker-field--wide'}}" bindtap="chooseBrand">
+        <text class="ui-label-cn">品牌</text>
+        <text class="ui-label-en">Brand</text>
+        <text class="picker-field__value {{selection.brand ? '' : 'placeholder'}}">{{selection.brand || '请选择品牌'}}</text>
+      </button>
+
+      <button wx:for="{{activeFields}}" wx:key="key" class="picker-field" data-field="{{item.key}}" bindtap="chooseField">
+        <text class="ui-label-cn">{{item.label}}</text>
+        <text class="ui-label-en">Selection parameter</text>
+        <text class="picker-field__value {{item.isPlaceholder ? 'placeholder' : ''}}">{{item.valueText}}</text>
+      </button>
+
+      <button class="picker-field picker-field--wide {{selection.brand ? '' : 'picker-field--disabled'}}" bindtap="chooseSourceModel" disabled="{{!selection.brand}}">
+        <text class="ui-label-cn">该品牌型号</text>
+        <text class="ui-label-en">Source Model</text>
+        <scroll-view scroll-x="true" class="picker-field__value {{selection.sourceModel ? '' : 'placeholder'}}" enhanced="true" show-scrollbar="false">{{sourceModelText || '请选择型号'}}</scroll-view>
+      </button>
+    </view>
+    <button class="ui-button-secondary select-reset" bindtap="reset">重置条件</button>
+  </view>
+
+  <view wx:if="{{toolMode === 'select' && results.length}}" class="result-list">
+    <view wx:for="{{results}}" wx:key="sourceModel" class="result-card ui-card">
+      <view class="validation-item__head">
+        <view class="source-block">
+          <text class="source-label">{{item.brand}}</text>
+          <scroll-view scroll-x="true" class="source-code" enhanced="true" show-scrollbar="false">{{item.sourceModelText}}</scroll-view>
+        </view>
+        <text class="ui-status ui-status-{{item.statusTone}}">{{item.kindText}}</text>
+      </view>
+
+      <button wx:if="{{item.hasVigourModel && item.copyAllowed}}" class="mapping-card mapping-card--button" data-model="{{item.vigourModel}}" data-review="false" bindtap="copyVigourModel">
+        <view class="mapping-card__content"><text class="mapping-label">VIGOUR</text><scroll-view scroll-x="true" class="ui-result-code" enhanced="true">{{item.vigourModel}}</scroll-view></view>
+        <text class="mapping-action">复制</text>
+      </button>
+      <button
+        wx:elif="{{item.salesNeedsConfirmation && item.reviewCopyAllowed && item.displayVigourModel}}"
+        class="mapping-card mapping-card--button mapping-card--warning"
+        data-model="{{item.displayVigourModel}}"
+        data-review="true"
+        bindtap="copyVigourModel"
+        hover-class="mapping-card--pressed"
+      >
+        <view class="mapping-card__content"><text class="mapping-label">VIGOUR 待确认</text><scroll-view scroll-x="true" class="ui-result-code" enhanced="true">{{item.displayVigourModel}}</scroll-view></view>
+        <text class="mapping-action mapping-action--warning">复制并核实</text>
+      </button>
+      <view wx:else class="mapping-card mapping-card--empty"><text>暂时没有匹配产品，请联系工厂确认</text></view>
+
+      <view wx:if="{{item.hasDimensionComparison}}" class="dimension-comparison dimension-comparison--{{item.dimensionComparisonTone}}">
+        <view class="dimension-comparison__head">
+          <text class="dimension-comparison__title">尺寸差异 / DIMENSION DELTA</text>
+          <text class="dimension-comparison__summary">{{item.dimensionComparisonSummary}}</text>
+        </view>
+        <text wx:if="{{item.dimensionComparisonMissingText}}" class="dimension-comparison__missing">{{item.dimensionComparisonMissingText}}</text>
+        <view wx:for="{{item.dimensionComparisons}}" wx:for-item="dimension" wx:key="key" class="dimension-row dimension-row--{{dimension.tone}}">
+          <view class="dimension-row__main">
+            <text class="dimension-row__label">{{dimension.label}}</text>
+            <text class="dimension-row__values">原 {{dimension.sourceText}} → VIGOUR {{dimension.targetText}} {{dimension.unit}}</text>
+          </view>
+          <text class="dimension-row__delta">差 {{dimension.differenceText}} {{dimension.unit}} · {{dimension.statusText}}<text wx:if="{{dimension.toleranceConfirmed}}">（≤ {{dimension.toleranceText}} {{dimension.unit}}）</text><text wx:else>（公差待确认）</text></text>
+        </view>
+        <text wx:if="{{item.dimensionEvidencePageSummary}}" class="dimension-comparison__evidence">证据：{{item.dimensionEvidencePageSummary}}</text>
+      </view>
+
+      <view wx:if="{{item.matchWarnings.length}}" class="warning-list">
+        <text wx:for="{{item.matchWarnings}}" wx:for-item="warning" wx:key="text" class="warning-text warning-text--{{warning.level}}">{{warning.text}}</text>
+      </view>
+
+      <button class="details-toggle" data-model="{{item.sourceModel}}" bindtap="toggleResultDetails">{{item.detailsOpen ? '收起完整规格' : '查看完整规格'}} {{item.detailsOpen ? '↑' : '↓'}}</button>
+      <view wx:if="{{item.detailsOpen}}" class="spec-grid">
+        <view wx:for="{{item.specs}}" wx:for-item="spec" wx:key="label" class="spec-item">
+          <text class="spec-label">{{spec.label}}</text><text class="spec-value">{{spec.value}}</text>
+        </view>
+        <text class="product-name">{{item.productName}}</text>
+        <text class="result-note">{{item.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="engineering-card ui-card">
+    <button class="engineering-toggle" aria-label="{{engineeringNotesOpen ? '收起工程说明' : '展开工程说明'}}" bindtap="toggleEngineeringNotes">
+      <view><text class="engineering-title">工程说明</text><text class="engineering-en">Engineering Notes</text></view>
+      <text>{{engineeringNotesOpen ? '↑' : '↓'}}</text>
+    </button>
+    <text wx:if="{{engineeringNotesOpen}}" class="ui-engineering-note">当前内容基于 VIGOUR VUPS 型号库与已整理的 Swagelok、JSK、FUJIKIN、FITOK、TK-Fujikin、SUPERLOK、UNILOK 编码规则生成。候选型号用于初选，正式替代前请复核连接形式、材质等级、工艺、表面处理和样本尺寸。</text>
+  </view>
+
+  <option-sheet
+    visible="{{optionSheet.visible}}"
+    title="{{optionSheet.title}}"
+    options="{{optionSheet.options}}"
+    searchable="{{true}}"
+    bindselect="onOptionSelect"
+    bindclose="closeOptionSheet"
+  />
+</view>
