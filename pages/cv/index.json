@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Cv / 流量换算",
+  "usingComponents": {
+    "app-header": "/components/app-header/index",
+    "option-sheet": "/components/option-sheet/index"
+  }
+}

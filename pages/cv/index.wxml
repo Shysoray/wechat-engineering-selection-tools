@@ -1,0 +1,158 @@
+<view class="ui-page cv-page">
+  <app-header title="Cv / 流量换算" subtitle="Flow Coefficient Calculator" />
+
+  <view class="ui-card control-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">AUTO CALCULATE</text>
+        <text class="section-title">选择计算方向</text>
+        <text class="section-subtitle">参数完整后自动计算，切换单位会保持相同物理量。</text>
+      </view>
+      <button class="example-button" bindtap="loadExample">填入示例</button>
+    </view>
+
+    <view class="segment-group">
+      <button class="segment {{cvTool.mode === 'cv' ? 'active' : ''}}" data-mode="cv" bindtap="onCvModeChange">
+        <text>流量 → Cv</text><text class="segment__en">FLOW TO CV</text>
+      </button>
+      <button class="segment {{cvTool.mode === 'flow' ? 'active' : ''}}" data-mode="flow" bindtap="onCvModeChange">
+        <text>Cv → 流量</text><text class="segment__en">CV TO FLOW</text>
+      </button>
+    </view>
+    <view class="segment-group segment-group--media">
+      <button class="segment segment--media {{cvTool.mediaType === 'gas' ? 'active' : ''}}" data-type="gas" bindtap="onCvMediaTypeChange">气体 / GAS</button>
+      <button class="segment segment--media {{cvTool.mediaType === 'liquid' ? 'active' : ''}}" data-type="liquid" bindtap="onCvMediaTypeChange">液体 / LIQUID</button>
+    </view>
+
+    <view class="unit-toolbar unit-toolbar--{{cvTool.mediaType}}">
+      <button class="unit-control" bindtap="choosePressureUnit"><text class="unit-control__label">压力单位</text><text class="unit-control__value">{{pressureUnits[cvTool.pressureUnitIndex].label}}⌄</text></button>
+      <button wx:if="{{cvTool.mediaType === 'gas'}}" class="unit-control" bindtap="chooseGasFlowUnit"><text class="unit-control__label">流量单位</text><text class="unit-control__value">{{gasFlowUnits[cvTool.gasFlowUnitIndex].label}}⌄</text></button>
+      <button wx:else class="unit-control" bindtap="chooseLiquidFlowUnit"><text class="unit-control__label">流量单位</text><text class="unit-control__value">{{liquidFlowUnits[cvTool.liquidFlowUnitIndex].label}}⌄</text></button>
+      <button wx:if="{{cvTool.mediaType === 'gas'}}" class="unit-control" bindtap="chooseTemperatureUnit"><text class="unit-control__label">温度单位</text><text class="unit-control__value">{{temperatureUnits[cvTool.temperatureUnitIndex].label}}⌄</text></button>
+    </view>
+
+    <view class="current-context" aria-label="当前工况">
+      <text class="current-context__label">当前工况</text>
+      <text wx:if="{{cvTool.mediaType === 'gas'}}" class="current-context__value">{{cvTool.gasMediaIndex < 0 ? (cvTool.sg ? '自定义气体 · GAS' : '气体 · 介质未指定') : gasMediaOptions[cvTool.gasMediaIndex].label + ' · GAS'}}</text>
+      <text wx:else class="current-context__value">{{cvTool.liquidMediaIndex < 0 ? (cvTool.sg ? '自定义液体 · LIQUID' : '液体 · 介质未指定') : liquidMediaOptions[cvTool.liquidMediaIndex].label + ' · LIQUID'}}</text>
+      <text class="current-context__state {{cvResult ? 'is-ready' : ''}}">{{cvResult ? '结果已更新' : '完善参数后自动计算'}}</text>
+    </view>
+
+    <view class="control-footer">
+      <text wx:if="{{isExample}}" class="example-notice">当前为示例工况 / Example condition</text>
+      <button class="reset-button" bindtap="reset">重置</button>
+    </view>
+  </view>
+
+  <text wx:if="{{actionNotice}}" class="action-notice">{{actionNotice}}</text>
+
+  <view wx:if="{{cvResult}}" class="ui-card result-card result-anchor">
+    <view class="result-top">
+      <view>
+        <text class="result-eyebrow">CALCULATED RESULT</text>
+        <text class="result-label">{{cvResult.label}}</text>
+      </view>
+      <text class="ui-status ui-status-success">已计算</text>
+    </view>
+    <view class="result-value-row">
+      <text class="result-value">{{cvResult.value}}</text>
+      <text class="result-unit">{{cvResult.unit}}</text>
+    </view>
+    <view class="result-meta">
+      <view class="result-meta__item result-meta__item--media {{mediaContextHighlight ? 'is-highlighted' : ''}}"><text class="result-meta__label">计算介质 / MEDIA</text><view class="result-media-value"><text>{{cvResult.context.mediaDisplay}}</text><text class="result-media-type">{{cvResult.context.mediaTypeLabel}}</text></view></view>
+      <view class="result-meta__item"><text class="result-meta__label">相对比重</text><text>SG {{cvResult.context.sgDisplay}}</text></view>
+      <view wx:if="{{cvResult.context.isGas}}" class="result-meta__item"><text class="result-meta__label">工作温度</text><text>{{cvResult.context.temperatureDisplay}}</text></view>
+      <view class="result-meta__item"><text class="result-meta__label">P1</text><text>{{cvResult.p1Pressure}} {{cvResult.pressureUnit}}</text></view>
+      <view class="result-meta__item"><text class="result-meta__label">P2 / ΔP</text><text>{{cvResult.p2Pressure}} / {{cvResult.pressureDrop}} {{cvResult.pressureUnit}}</text></view>
+      <view class="result-meta__item result-meta__item--wide"><text class="result-meta__label">流态</text><text>{{cvResult.flowState}}</text></view>
+    </view>
+  </view>
+
+  <view class="ui-card form-card">
+    <view class="form-section-head">
+      <view><text class="form-title">压力条件</text><text class="form-title__en">Pressure Conditions</text></view>
+    </view>
+    <view class="field-grid">
+      <view class="ui-field">
+        <text class="ui-label-cn">进口压力 P1</text><text class="ui-label-en">Inlet pressure</text>
+        <view class="input-with-unit">
+          <input class="field-input" type="digit" value="{{cvTool.p1}}" data-field="p1" bindinput="onCvInput" placeholder="例如 0.8" />
+          <text class="field-unit">{{cvTool.pressureUnitIndex < 0 ? '—' : pressureUnits[cvTool.pressureUnitIndex].label}}</text>
+        </view>
+        <text wx:if="{{fieldErrors.p1}}" class="ui-field-error">{{fieldErrors.p1}}</text>
+      </view>
+      <view class="ui-field">
+        <text class="ui-label-cn">出口压力 P2</text><text class="ui-label-en">Outlet pressure</text>
+        <view class="input-with-unit">
+          <input class="field-input" type="digit" value="{{cvTool.p2}}" data-field="p2" bindinput="onCvInput" placeholder="例如 0.2" />
+          <text class="field-unit">{{cvTool.pressureUnitIndex < 0 ? '—' : pressureUnits[cvTool.pressureUnitIndex].label}}</text>
+        </view>
+        <text wx:if="{{fieldErrors.p2}}" class="ui-field-error">{{fieldErrors.p2}}</text>
+      </view>
+    </view>
+    <text wx:if="{{fieldErrors.pressureUnit}}" class="ui-field-error">{{fieldErrors.pressureUnit}}</text>
+  </view>
+
+  <view class="ui-card form-card">
+    <view class="form-section-head">
+      <view><text class="form-title">{{cvTool.mode === 'cv' ? '流量输入' : 'Cv 输入'}}</text><text class="form-title__en">{{cvTool.mode === 'cv' ? 'Flow Input' : 'Cv Input'}}</text></view>
+    </view>
+
+    <view wx:if="{{cvTool.mode === 'cv'}}" class="ui-field">
+      <text class="ui-label-cn">设计流量 Q</text><text class="ui-label-en">Design flow</text>
+      <view class="input-with-unit">
+        <input class="field-input" type="digit" value="{{cvTool.flow}}" data-field="flow" bindinput="onCvInput" placeholder="请输入流量" />
+        <text wx:if="{{cvTool.mediaType === 'gas'}}" class="field-unit">{{cvTool.gasFlowUnitIndex < 0 ? '—' : gasFlowUnits[cvTool.gasFlowUnitIndex].label}}</text>
+        <text wx:else class="field-unit">{{cvTool.liquidFlowUnitIndex < 0 ? '—' : liquidFlowUnits[cvTool.liquidFlowUnitIndex].label}}</text>
+      </view>
+      <text wx:if="{{fieldErrors.flow}}" class="ui-field-error">{{fieldErrors.flow}}</text>
+    </view>
+    <view wx:else class="ui-field">
+      <text class="ui-label-cn">已知 Cv</text><text class="ui-label-en">Known flow coefficient</text>
+      <view class="input-with-unit">
+        <input class="field-input" type="digit" value="{{cvTool.cv}}" data-field="cv" bindinput="onCvInput" placeholder="请输入 Cv" />
+        <text class="field-unit">Cv</text>
+      </view>
+      <text wx:if="{{fieldErrors.cv}}" class="ui-field-error">{{fieldErrors.cv}}</text>
+    </view>
+    <text wx:if="{{fieldErrors.flowUnit}}" class="ui-field-error">{{fieldErrors.flowUnit}}</text>
+  </view>
+
+  <view class="ui-card form-card">
+    <view class="form-section-head">
+      <view><text class="form-title">介质参数</text><text class="form-title__en">Media Properties</text></view>
+    </view>
+    <view class="field-grid">
+      <view class="ui-field">
+        <text class="ui-label-cn">系统介质</text><text class="ui-label-en">Process media</text>
+        <button wx:if="{{cvTool.mediaType === 'gas'}}" class="picker-field" bindtap="chooseGasMedia">{{cvTool.gasMediaIndex < 0 ? '选择气体介质' : gasMediaOptions[cvTool.gasMediaIndex].label}}<text>⌄</text></button>
+        <button wx:else class="picker-field" bindtap="chooseLiquidMedia">{{cvTool.liquidMediaIndex < 0 ? '选择液体介质' : liquidMediaOptions[cvTool.liquidMediaIndex].label}}<text>⌄</text></button>
+      </view>
+      <view class="ui-field">
+        <text class="ui-label-cn">相对比重</text><text class="ui-label-en">Specific gravity</text>
+        <view class="input-with-unit"><input class="field-input" type="digit" value="{{cvTool.sg}}" data-field="sg" bindinput="onCvInput" placeholder="例如 1.0" /><text class="field-unit">SG</text></view>
+        <text wx:if="{{fieldErrors.sg}}" class="ui-field-error">{{fieldErrors.sg}}</text>
+      </view>
+      <view wx:if="{{cvTool.mediaType === 'gas'}}" class="ui-field field-grid__wide">
+        <text class="ui-label-cn">工作温度</text><text class="ui-label-en">Operating temperature</text>
+        <view class="input-with-unit"><input class="field-input" type="digit" value="{{cvTool.temperature}}" data-field="temperature" bindinput="onCvInput" placeholder="例如 20" /><text class="field-unit">{{cvTool.temperatureUnitIndex < 0 ? '—' : temperatureUnits[cvTool.temperatureUnitIndex].label}}</text></view>
+        <text wx:if="{{fieldErrors.temperature || fieldErrors.temperatureUnit}}" class="ui-field-error">{{fieldErrors.temperature || fieldErrors.temperatureUnit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{cvErrors.length}}" class="error-summary">
+    <text class="error-summary__title">请检查以下参数</text>
+    <text wx:for="{{cvErrors}}" wx:key="*this" class="error-summary__item">{{item}}</text>
+  </view>
+
+  <view class="ui-card engineering-card">
+    <button class="engineering-toggle" aria-label="{{engineeringNotesOpen ? '收起工程说明' : '展开工程说明'}}" bindtap="toggleEngineeringNotes">
+      <view><text class="engineering-title">工程说明</text><text class="engineering-en">Engineering Notes</text></view>
+      <text>{{engineeringNotesOpen ? '↑' : '↓'}}</text>
+    </button>
+    <text wx:if="{{engineeringNotesOpen}}" class="ui-engineering-note">气体计算按绝对压力处理，PSIG 会自动换算为 PSIA；单位切换只改变显示数值，不改变实际物理工况。结果用于工程初算，正式应用前请结合产品样本和实际工况复核。</text>
+  </view>
+
+  <option-sheet visible="{{optionSheet.visible}}" title="{{optionSheet.title}}" options="{{optionSheet.options}}" searchable="{{true}}" bindselect="onOptionSelect" bindclose="closeOptionSheet" />
+</view>
