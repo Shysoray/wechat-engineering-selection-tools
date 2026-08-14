@@ -1,0 +1,113 @@
+<view class="home" style="padding-top: {{safeTop}}px">
+  <view class="home-capsule-space"></view>
+
+  <view class="home-hero">
+    <view class="brand-lockup" aria-label="VIGOUR 皓固">
+      <view class="brand-lockup__part brand-lockup__part--en">
+        <image
+          class="brand-lockup__official-source brand-lockup__official-source--red"
+          src="/assets/brand/vigour-brand-lockup-white.png"
+          mode="widthFix"
+        />
+      </view>
+      <view class="brand-lockup__part brand-lockup__part--cn">
+        <image
+          class="brand-lockup__official-source brand-lockup__official-source--black"
+          src="/assets/brand/vigour-brand-lockup-white.png"
+          mode="widthFix"
+        />
+      </view>
+    </view>
+    <text class="home-kicker">ENGINEERING SELECTION TOOLS</text>
+    <text class="home-tool-title">选型工具</text>
+  </view>
+
+  <view class="quick-card">
+    <view class="quick-card__head">
+      <view>
+        <text class="quick-card__label">快速型号查询</text>
+        <text class="quick-card__label-en">QUICK MODEL MATCH</text>
+      </view>
+      <text class="quick-card__hint">单型号</text>
+    </view>
+    <view class="quick-card__row">
+      <input
+        class="quick-model-input"
+        value="{{quickModel}}"
+        bindinput="onQuickInput"
+        bindconfirm="submitQuickModel"
+        confirm-type="search"
+        placeholder="输入品牌型号，例如 SS-4-VCR-2-GR-VS"
+      />
+      <button class="quick-card__submit" aria-label="提交快速型号查询" hover-class="quick-card__submit--pressed" bindtap="submitQuickModel">→</button>
+    </view>
+    <button class="batch-entry" bindtap="openBatchChooser">
+      <view>
+        <text class="batch-entry__title">批量型号对标</text>
+        <text class="batch-entry__subtitle">Batch cross reference</text>
+      </view>
+      <text class="batch-entry__arrow">↗</text>
+    </button>
+  </view>
+
+  <view class="tools-heading">
+    <text class="tools-heading__cn">工程工具</text>
+    <text class="tools-heading__en">ENGINEERING TOOLS · 05</text>
+  </view>
+
+  <view class="tool-grid">
+    <view
+      wx:for="{{tools}}"
+      wx:key="id"
+      class="tool-card {{item.featured ? 'tool-card--featured' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="openTool"
+      hover-class="tool-card--pressed"
+      aria-role="button"
+      aria-label="打开{{item.name}}，{{item.desc}}"
+    >
+      <view class="tool-card__copy">
+        <text class="tool-card__number">{{item.number}}{{item.eyebrow ? ' / ' + item.eyebrow : ''}}</text>
+        <text class="tool-card__name">{{item.name}}</text>
+        <text class="tool-card__english">{{item.english}}</text>
+        <text class="tool-card__desc">{{item.desc}}</text>
+      </view>
+      <view class="tool-card__media {{item.image ? '' : 'tool-card__media--placeholder'}}">
+        <image
+          wx:if="{{item.image}}"
+          class="tool-card__image {{item.featured ? 'tool-card__image--foreground' : ''}}"
+          src="{{item.image}}"
+          mode="aspectFit"
+        />
+        <view wx:else class="aptech-placeholder">
+          <text class="aptech-placeholder__mark">AP</text>
+          <text class="aptech-placeholder__text">专属产品图待提供</text>
+        </view>
+      </view>
+      <text class="tool-card__arrow">↗</text>
+    </view>
+  </view>
+
+  <view wx:if="{{chooser}}" class="chooser-mask" bindtap="closeChooser">
+    <view class="chooser" catchtap="noop">
+      <text class="chooser__eyebrow">SELECT TOOL</text>
+      <text class="chooser__title">{{chooser === 'batch' ? '选择批量对标工具' : '请选择型号类型'}}</text>
+      <text class="chooser__subtitle">两套数据库与匹配规则保持独立</text>
+      <button class="chooser__option" data-kind="fitting" bindtap="chooseModelTool">
+        <view>
+          <text class="chooser__option-title">管接头型号对标</text>
+          <text class="chooser__option-en">Fitting Cross Reference</text>
+        </view>
+        <text>→</text>
+      </button>
+      <button class="chooser__option" data-kind="aptech" bindtap="chooseModelTool">
+        <view>
+          <text class="chooser__option-title">APTech 型号对标</text>
+          <text class="chooser__option-en">APTech Cross Reference</text>
+        </view>
+        <text>→</text>
+      </button>
+      <button class="chooser__cancel" bindtap="closeChooser">取消</button>
+    </view>
+  </view>
+</view>
