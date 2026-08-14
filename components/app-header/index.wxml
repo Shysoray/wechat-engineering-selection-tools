@@ -1,0 +1,10 @@
+<view class="app-header" style="padding-top: {{safeTop}}px">
+  <view class="app-header__main">
+    <button wx:if="{{showBack}}" class="app-header__back" bindtap="goBack" aria-label="返回">‹</button>
+    <image class="app-header__logo" src="/assets/brand/vigour-logo.png" mode="widthFix" />
+    <view class="app-header__titles">
+      <text class="app-header__title">{{title}}</text>
+      <text class="app-header__subtitle">{{subtitle}}</text>
+    </view>
+  </view>
+</view>
