@@ -1,0 +1,139 @@
+<view class="ui-page aptech-page">
+  <app-header title="APTech 型号对标" subtitle="APTech Cross Reference" />
+
+  <view class="ui-card workspace-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">INDEPENDENT MATCHER</text>
+        <text class="section-title">批量型号识别</text>
+        <text class="section-subtitle">每行一个 AP / AZ 型号，也支持逗号或分号分隔。输入后点击开始匹配。</text>
+      </view>
+      <button class="example-button" bindtap="loadExample">填入示例</button>
+    </view>
+
+    <text wx:if="{{isExample}}" class="example-notice">当前为示例数据 / Example data</text>
+    <textarea
+      class="model-textarea"
+      value="{{inputText}}"
+      bindinput="onInput"
+      placeholder="例如：AP4000SM 2PW MV6 MV6"
+      maxlength="-1"
+    />
+    <text wx:if="{{resultStale}}" class="stale-notice">输入已变化，旧结果已失效，请重新匹配后再复制。</text>
+
+    <view class="submit-row">
+      <button class="ui-button-primary submit-button" hover-class="ui-button-primary-pressed" loading="{{isMatching}}" disabled="{{isMatching}}" bindtap="runMatch">
+        {{isMatching ? '匹配中…' : '开始匹配'}}
+      </button>
+      <button class="ui-button-secondary reset-button" bindtap="clearAll">重置</button>
+    </view>
+  </view>
+
+  <view wx:if="{{summary.total}}" class="aptech-result-anchor">
+    <view class="ui-card summary-card">
+      <view class="summary-head">
+        <view>
+          <text class="section-title">匹配结果</text>
+          <text class="section-subtitle">Match Results · 共 {{summary.total}} 行</text>
+        </view>
+        <text class="summary-count">{{summary.total}}</text>
+      </view>
+
+      <view class="summary-filters">
+        <button class="summary-filter {{resultFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="setResultFilter">全部 {{summary.total}}</button>
+        <button class="summary-filter summary-filter--success {{resultFilter === 'exact' ? 'active' : ''}}" data-filter="exact" bindtap="setResultFilter">精确 {{summary.exact}}</button>
+        <button class="summary-filter summary-filter--warning {{resultFilter === 'candidate' ? 'active' : ''}}" data-filter="candidate" bindtap="setResultFilter">待确认 {{summary.candidate}}</button>
+        <button class="summary-filter summary-filter--neutral {{resultFilter === 'missing' ? 'active' : ''}}" data-filter="missing" bindtap="setResultFilter">未识别 {{summary.missing}}</button>
+      </view>
+
+      <view class="copy-actions">
+        <button class="copy-button copy-button--primary" disabled="{{resultStale}}" bindtap="copyAllVigour">复制销售结果</button>
+        <button class="copy-button" disabled="{{resultStale}}" bindtap="copyAllMappings">复制完整对照</button>
+      </view>
+      <text class="copy-rule">复制始终包含全部 {{summary.total}} 行；筛选只改变屏幕显示，不改变行数和顺序。</text>
+    </view>
+
+    <view class="result-list">
+      <view wx:for="{{visibleResults}}" wx:key="resultKey" class="ui-card result-card result-card--{{item.kind}}">
+        <view class="result-head">
+          <view class="source-block">
+            <text class="source-label">输入 / INPUT</text>
+            <scroll-view scroll-x="true" class="source-model" enhanced="true" show-scrollbar="false">{{item.input}}</scroll-view>
+          </view>
+          <text class="ui-status {{item.kind === 'exact' ? 'ui-status-success' : item.kind === 'candidate' ? 'ui-status-warning' : 'ui-status-neutral'}}">{{item.kindText}}</text>
+        </view>
+
+        <text wx:if="{{item.kind !== 'exact'}}" class="match-status">{{item.status}}</text>
+
+        <view wx:if="{{item.candidates.length}}" class="candidate-list">
+          <view wx:for="{{item.candidates}}" wx:for-item="candidate" wx:key="candidateKey" class="candidate-row">
+            <view wx:if="{{candidate.sourceModel !== item.input || candidate.scoreTone === 'review'}}" class="candidate-head">
+              <view wx:if="{{candidate.sourceModel !== item.input}}" class="candidate-main">
+                <view wx:if="{{candidate.sourceModel !== item.input}}" class="candidate-detail">
+                  <text class="candidate-detail__label">候选：</text>
+                  <scroll-view scroll-x="true" class="candidate-model" enhanced="true" show-scrollbar="false">{{candidate.sourceModel}}</scroll-view>
+                </view>
+              </view>
+              <text wx:if="{{candidate.scoreTone === 'review'}}" class="candidate-score candidate-score--{{candidate.scoreTone}}">{{candidate.scoreText}}</text>
+            </view>
+
+            <button
+              wx:if="{{candidate.vigourModel && candidate.copySafe}}"
+              class="mapping-card mapping-card--button mapping-stack"
+              data-model="{{candidate.vigourModel}}"
+              data-copy-safe="{{candidate.copySafe}}"
+              bindtap="copyModel"
+              hover-class="mapping-card--pressed"
+            >
+              <view class="mapping-relation">
+                <text>APTech</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-model-row">
+                <scroll-view scroll-x="true" class="ui-result-code mapping-target" enhanced="true" show-scrollbar="false">{{candidate.vigourModel}}</scroll-view>
+                <text class="mapping-action">{{candidate.actionText}}</text>
+              </view>
+            </button>
+
+            <view wx:elif="{{candidate.vigourModel}}" class="mapping-card mapping-stack mapping-card--warning">
+              <view class="mapping-relation">
+                <text>APTech</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-model-row">
+                <scroll-view scroll-x="true" class="ui-result-code mapping-target" enhanced="true" show-scrollbar="false">{{candidate.vigourModel}}</scroll-view>
+                <text class="mapping-action mapping-action--locked">{{candidate.actionText}}</text>
+              </view>
+            </view>
+
+            <view wx:else class="mapping-card mapping-stack mapping-card--empty">
+              <view class="mapping-relation">
+                <text>APTech</text><text>→</text><text>VIGOUR</text>
+              </view>
+              <view class="mapping-model-row"><text class="empty-model">暂无 VIGOUR 候选型号</text></view>
+            </view>
+
+            <view wx:if="{{candidate.reviewNote || !candidate.copySafe}}" class="review-note">
+              <text class="review-note__title">复核要求 / REVIEW REQUIRED</text>
+              <text class="review-note__copy">{{candidate.reviewNote || '该候选不能作为确定对照，请人工复核。'}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view wx:else class="missing-state">
+          <text class="missing-state__title">数据库中未找到可靠候选</text>
+          <text class="missing-state__copy">未识别型号｜请检查品牌和订购号</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="ui-card engineering-card">
+    <button class="engineering-toggle" aria-label="{{engineeringNotesOpen ? '收起工程说明' : '展开工程说明'}}" bindtap="toggleEngineeringNotes">
+      <view>
+        <text class="engineering-title">工程说明</text>
+        <text class="engineering-en">Engineering Notes</text>
+      </view>
+      <text>{{engineeringNotesOpen ? '↑' : '↓'}}</text>
+    </button>
+    <text wx:if="{{engineeringNotesOpen}}" class="ui-engineering-note">APTech 对标使用独立的 AP / AZ 型号规则和已整理数据。已通过系列等效确认的完整规则结果显示为绿色并可复制；模糊、不完整或仍有未确认字段的候选保持琥珀色，必须复核系列、压力范围、阀位、接口、执行方式和特殊工艺。</text>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "APTech 型号对标",
+  "usingComponents": {
+    "app-header": "/components/app-header/index"
+  }
+}
