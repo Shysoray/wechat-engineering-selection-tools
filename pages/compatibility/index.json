@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "材质兼容性查询",
+  "usingComponents": {
+    "app-header": "/components/app-header/index",
+    "option-sheet": "/components/option-sheet/index"
+  }
+}

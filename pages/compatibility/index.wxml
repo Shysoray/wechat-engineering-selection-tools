@@ -1,0 +1,117 @@
+<view class="ui-page compatibility-page">
+  <app-header title="材质兼容性查询" subtitle="Material Compatibility Lookup" />
+
+  <view class="ui-card search-card">
+    <view class="section-head">
+      <view>
+        <text class="section-eyebrow">MSDS MATERIAL CHECK</text>
+        <text class="section-title">搜索工艺气体</text>
+        <text class="section-subtitle">已接入 {{gases.length}} 条 UHP 气体整合数据。</text>
+      </view>
+      <button class="example-button" bindtap="loadExample">TMA 示例</button>
+    </view>
+
+    <view class="search-box">
+      <text class="search-icon">⌕</text>
+      <input class="search-input" value="{{searchKeyword}}" bindinput="onSearchInput" placeholder="名称、化学式或 CAS" confirm-type="search" />
+      <text wx:if="{{searchKeyword}}" class="search-count">{{searchResults.length}}</text>
+    </view>
+
+    <view wx:if="{{searchKeyword}}" class="search-results">
+      <button wx:for="{{searchResults}}" wx:key="index" class="search-result" data-index="{{item.index}}" bindtap="onSearchResultTap">
+        <view>
+          <text class="search-result__name">{{item.cnName}}</text>
+          <text class="search-result__meta">{{item.enName}} · CAS {{item.cas}}</text>
+        </view>
+        <text class="search-result__formula">{{item.formula}}</text>
+      </button>
+      <view wx:if="{{searchResults.length === 0}}" class="empty-search">未找到匹配气体，请检查名称或 CAS。</view>
+    </view>
+
+    <view class="search-footer">
+      <button class="list-button" bindtap="chooseGasFromList">从完整列表选择 <text>⌄</text></button>
+      <button class="reset-button" bindtap="reset">重置</button>
+    </view>
+    <text wx:if="{{isExample}}" class="example-notice">当前为 TMA 示例 / Example data</text>
+  </view>
+
+  <block wx:if="{{selectedGas}}">
+    <view class="ui-card gas-card">
+      <view class="gas-head">
+        <view>
+          <text class="gas-name">{{selectedGas.cnName}}</text>
+          <text class="gas-en">{{selectedGas.enName}}</text>
+          <text class="gas-meta">{{selectedGas.formula}} · CAS {{selectedGas.cas}}</text>
+        </view>
+        <text class="state-pill">{{selectedGas.state}}</text>
+      </view>
+
+      <view class="msds-alert">
+        <text class="alert-label">MSDS 要点 / SAFETY SUMMARY</text>
+        <text class="alert-text">{{selectedGas.msdsSummary}}</text>
+      </view>
+
+      <view class="hazard-grid">
+        <view wx:for="{{selectedGas.hazardCards}}" wx:key="label" class="hazard-card hazard-card--{{item.levelClass}}">
+          <text class="hazard-label">{{item.label}}</text><text class="hazard-value">{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="ui-card material-panel">
+      <view class="panel-head">
+        <view><text class="panel-title">材质状态</text><text class="panel-en">Material Status</text></view>
+        <text class="material-count">{{selectedGas.materialStatuses.length}}</text>
+      </view>
+      <text class="compatibility-summary">判定摘要：{{selectedGas.compatibleText}}</text>
+
+      <view class="material-list">
+        <view wx:for="{{selectedGas.materialStatuses}}" wx:key="code" class="material-status material-status--{{item.status}}">
+          <view class="material-head">
+            <view class="material-identity">
+              <text class="material-code">{{item.code}}</text>
+              <text class="material-name">{{item.label}}</text>
+              <text class="material-role">{{item.roleLabel}}</text>
+            </view>
+            <view class="status-copy">
+              <text class="status-cn">{{item.statusText}}</text>
+              <text class="status-en">{{item.statusEn}}</text>
+            </view>
+          </view>
+          <text class="material-evidence">{{item.evidenceLabel}}</text>
+          <text class="material-note">{{item.note}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-list">
+      <view wx:for="{{selectedGas.detailGroups}}" wx:key="title" class="ui-card detail-card">
+        <button class="detail-toggle" data-title="{{item.title}}" bindtap="toggleDetailGroup">
+          <view><text class="detail-title">{{item.title}}</text><text class="detail-en">Technical Details</text></view>
+          <text>{{expandedGroupMap[item.title] ? '↑' : '↓'}}</text>
+        </button>
+        <view wx:if="{{expandedGroupMap[item.title]}}" class="spec-grid">
+          <view wx:for="{{item.items}}" wx:for-item="spec" wx:key="label" class="spec-item">
+            <text class="spec-label">{{spec.label}}</text><text class="spec-value">{{spec.value}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="ui-card process-card">
+      <view class="process-row"><text class="process-label">常见工艺</text><text class="process-value">{{selectedGas.processText}}</text></view>
+      <view class="process-row"><text class="process-label">尾气处理</text><text class="process-value">{{selectedGas.exhaustText}}</text></view>
+      <view class="process-row"><text class="process-label">备注</text><text class="process-value">{{selectedGas.noteText}}</text></view>
+    </view>
+  </block>
+
+  <view class="ui-card engineering-card">
+    <button class="engineering-toggle" aria-label="{{engineeringNotesOpen ? '收起工程说明' : '展开工程说明'}}" bindtap="toggleEngineeringNotes">
+      <view><text class="engineering-title">工程说明</text><text class="engineering-en">Engineering Notes</text></view>
+      <text>{{engineeringNotesOpen ? '↑' : '↓'}}</text>
+    </button>
+    <text wx:if="{{engineeringNotesOpen}}" class="ui-engineering-note">状态按应用位置区分：SS、Ni、H 为过滤元件记录，PCTFE、PI/Vespel 为阀座与密封记录。“资料列入”仅表示厂商文件包含该组合，不等于具体工况已放行；初筛、有条件与慎用必须由供应商确认；禁配表示已有明确不兼容记录。正式选型前仍需结合供应商 SDS、材料牌号、温度、压力、浓度、动态循环和洁净等级复核。<text wx:if="{{selectedGas}}">数据来源：{{selectedGas.sourceText}}</text></text>
+  </view>
+
+  <option-sheet visible="{{optionSheet.visible}}" title="{{optionSheet.title}}" options="{{optionSheet.options}}" searchable="{{true}}" bindselect="onGasOptionSelect" bindclose="closeOptionSheet" />
+</view>
