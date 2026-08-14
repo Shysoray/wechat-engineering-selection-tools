@@ -1,0 +1,27 @@
+<view wx:if="{{visible}}" class="option-sheet__mask" bindtap="close">
+  <view class="option-sheet" catchtap="noop">
+    <view class="option-sheet__head">
+      <view>
+        <text class="option-sheet__title">{{title}}</text>
+        <text class="option-sheet__subtitle">Select an option</text>
+      </view>
+      <button class="option-sheet__close" bindtap="close">取消</button>
+    </view>
+    <view wx:if="{{searchable}}" class="option-sheet__search">
+      <text class="option-sheet__search-icon">⌕</text>
+      <input value="{{keyword}}" bindinput="onSearch" placeholder="搜索名称或代码" />
+    </view>
+    <scroll-view class="option-sheet__list" scroll-y="true">
+      <view
+        wx:for="{{visibleOptions}}"
+        wx:key="originalIndex"
+        class="option-sheet__option"
+        data-index="{{index}}"
+        bindtap="selectOption"
+      >
+        <text>{{item.option.label}}</text>
+      </view>
+      <view wx:if="{{!visibleOptions.length}}" class="option-sheet__empty">没有匹配选项</view>
+    </scroll-view>
+  </view>
+</view>
